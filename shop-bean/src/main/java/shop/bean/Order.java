@@ -1,7 +1,8 @@
-package bean;
+package shop.bean;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import shop.utils.id.SnowFlakeFactory;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -52,5 +53,9 @@ public class Order implements Serializable {
      */
     @TableField("t_total_price")
     private BigDecimal totalPrice;
+
+    public Order(){
+        this.id = SnowFlakeFactory.getSnowFlakeFromCache().nextId();
+    }
 
 }

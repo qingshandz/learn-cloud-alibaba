@@ -1,7 +1,9 @@
-package bean;
+package shop.bean;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import shop.utils.id.SnowFlakeFactory;
+import shop.utils.passwd.PasswordUtils;
 
 import java.io.Serializable;
 
@@ -47,4 +49,9 @@ public class User implements Serializable {
     @TableField("t_address")
     private String address;
 
+    public User(){
+        this.id = SnowFlakeFactory.getSnowFlakeFromCache().nextId();
+        //默认密码
+        this.password = PasswordUtils.getPassword("123456");
+    }
 }

@@ -1,37 +1,27 @@
-package bean;
+package shop.bean;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import shop.utils.id.SnowFlakeFactory;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-
 /**
  * @author binghe
  * @version 1.0.0
- * @description 订单明细
+ * @description 商品
  */
 @Data
-@TableName("t_order_item")
-public class OrderItem implements Serializable {
-    private static final long serialVersionUID = -1329173923755780293L;
-
+@TableName("t_product")
+public class Product implements Serializable {
+    private static final long serialVersionUID = -2907409980909070073L;
     /**
      * 数据id
      */
     @TableId(value = "id", type = IdType.INPUT)
     @TableField(value = "id", fill = FieldFill.INSERT)
     private Long id;
-
-    @TableField("t_order_id")
-    private Long orderId;
-
-    /**
-     * 商品id
-     */
-    @TableField("t_pro_id")
-    private Long proId;
 
     /**
      * 商品名称
@@ -40,15 +30,19 @@ public class OrderItem implements Serializable {
     private String proName;
 
     /**
-     * 商品价格（单价）
+     * 商品价格
      */
     @TableField("t_pro_price")
     private BigDecimal proPrice;
 
     /**
-     * 购买数量
+     * 商品库存
      */
-    @TableField("t_number")
-    private Integer number;
+    @TableField("t_pro_stock")
+    private Integer proStock;
 
+
+    public Product(){
+        this.id = SnowFlakeFactory.getSnowFlakeFromCache().nextId();
+    }
 }
