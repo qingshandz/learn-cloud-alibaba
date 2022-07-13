@@ -4,7 +4,7 @@ server:
     context-path: /user
 spring:
   application:
-    name: server-shop.user
+    name: server-user
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/shop?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
@@ -39,6 +39,11 @@ spring:
       enabled: true
       charset: UTF-8
       force: true
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
 
   mybatis-plus:
     global-config:

@@ -25,8 +25,8 @@ import java.math.BigDecimal;
  * @description:
  */
 @Slf4j
-@Service
-public class OrderServiceImpl implements OrderService {
+@Service("orderServiceV1")
+public class OrderServiceV1Impl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
     @Autowired
@@ -41,16 +41,16 @@ public class OrderServiceImpl implements OrderService {
         if (orderParams.isEmpty()) {
             throw new RuntimeException("参数异常: " + JSONObject.toJSONString(orderParams));
         }
+        User user = restTemplate.getForObject("http://localhost:8060/user/get/" + orderParams.getUserId(), User.class);
+        if (user == null){
+            throw new RuntimeException("未获取到用户信息: " + JSONObject.toJSONString(orderParams));
+        }
         Product product = restTemplate.getForObject("http://localhost:8070/product/get/" + orderParams.getProductId(), Product.class);
-        if (product == null) {
+        if (product == null){
             throw new RuntimeException("未获取到商品信息: " + JSONObject.toJSONString(orderParams));
         }
-        if (product.getProStock() < orderParams.getCount()) {
+        if (product.getProStock() < orderParams.getCount()){
             throw new RuntimeException("商品库存不足: " + JSONObject.toJSONString(orderParams));
-        }
-        User user = restTemplate.getForObject("http://localhost:8060/user/get/" + orderParams.getUserId(), User.class);
-        if (user == null) {
-            throw new RuntimeException("未获取到用户信息: " + JSONObject.toJSONString(orderParams));
         }
         Order order = new Order();
         order.setAddress(user.getAddress());
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
         orderItemMapper.insert(orderItem);
 
         Result<Integer> result = restTemplate.getForObject("http://localhost:8070/product/update_count/" + orderParams.getProductId() + "/" + orderParams.getCount(), Result.class);
-        if (result.getCode() != HttpCode.SUCCESS) {
+        if (result.getCode() != HttpCode.SUCCESS){
             throw new RuntimeException("库存扣减失败");
         }
         log.info("库存扣减成功");

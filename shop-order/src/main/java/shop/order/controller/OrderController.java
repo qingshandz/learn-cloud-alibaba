@@ -3,6 +3,8 @@ package shop.order.controller;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.order.service.OrderService;
@@ -18,6 +20,7 @@ import shop.params.OrderParams;
 public class OrderController {
 
     @Autowired
+    @Qualifier("orderServiceV2")
     private OrderService orderService;
 
     @GetMapping(value = "/submit_order")

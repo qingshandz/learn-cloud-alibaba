@@ -22,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(value = "/get/{uid}")
-    public User getProduct(@PathVariable("uid") Long uid){
+    public User getUser(@PathVariable("uid") Long uid){
         User user = userService.getUserById(uid);
         log.info("获取到的用户信息为：{}", JSONObject.toJSONString(user));
         return user;
