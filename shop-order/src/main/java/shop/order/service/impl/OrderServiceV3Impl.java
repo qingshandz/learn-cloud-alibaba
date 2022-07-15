@@ -20,6 +20,8 @@ import shop.utils.constants.HttpCode;
 import shop.utils.resp.Result;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
 
 /**
  * @author wh
@@ -27,8 +29,8 @@ import java.math.BigDecimal;
  * @description:
  */
 @Slf4j
-@Service("orderServiceV2")
-public class OrderServiceV2Impl implements OrderService {
+@Service("orderServiceV3")
+public class OrderServiceV3Impl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
     @Autowired
@@ -43,8 +45,12 @@ public class OrderServiceV2Impl implements OrderService {
     private String productServer = "server-product";
 
     private String getServiceUrl(String serviceName){
-        ServiceInstance serviceInstance = discoveryClient.getInstances(serviceName).get(0);
-        return serviceInstance.getHost() + ":" + serviceInstance.getPort();
+        List<ServiceInstance> instances = discoveryClient.getInstances(serviceName);
+        int index = new Random().nextInt(instances.size());
+        ServiceInstance serviceInstance = instances.get(index);
+        String url = serviceInstance.getHost() + ":" + serviceInstance.getPort();
+        log.info("负载均衡后的服务地址为:{}", url);
+        return url;
     }
 
 

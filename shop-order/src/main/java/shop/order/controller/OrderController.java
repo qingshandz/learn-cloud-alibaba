@@ -20,7 +20,7 @@ import shop.params.OrderParams;
 public class OrderController {
 
     @Autowired
-    @Qualifier("orderServiceV2")
+    @Qualifier("orderServiceV4")
     private OrderService orderService;
 
     @GetMapping(value = "/submit_order")

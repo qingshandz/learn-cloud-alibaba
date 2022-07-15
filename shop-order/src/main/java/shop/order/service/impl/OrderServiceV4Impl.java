@@ -3,8 +3,6 @@ package shop.order.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -27,25 +25,18 @@ import java.math.BigDecimal;
  * @description:
  */
 @Slf4j
-@Service("orderServiceV2")
-public class OrderServiceV2Impl implements OrderService {
+@Service("orderServiceV4")
+public class OrderServiceV4Impl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
     @Autowired
     private OrderItemMapper orderItemMapper;
     @Autowired
     private RestTemplate restTemplate;
-    @Autowired
-    private DiscoveryClient discoveryClient;
 
     private String userServer = "server-user";
 
     private String productServer = "server-product";
-
-    private String getServiceUrl(String serviceName){
-        ServiceInstance serviceInstance = discoveryClient.getInstances(serviceName).get(0);
-        return serviceInstance.getHost() + ":" + serviceInstance.getPort();
-    }
 
 
     @Override
@@ -54,15 +45,12 @@ public class OrderServiceV2Impl implements OrderService {
         if (orderParams.isEmpty()){
             throw new RuntimeException("参数异常: " + JSONObject.toJSONString(orderParams));
         }
-        //从Nacos服务中获取用户服务与商品服务的地址
-        String userUrl = this.getServiceUrl(userServer);
-        String productUrl = this.getServiceUrl(productServer);
 
-        User user = restTemplate.getForObject("http://"+userUrl+"/user/get/" + orderParams.getUserId(), User.class);
+        User user = restTemplate.getForObject("http://"+userServer+"/user/get/" + orderParams.getUserId(), User.class);
         if (user == null){
             throw new RuntimeException("未获取到用户信息: " + JSONObject.toJSONString(orderParams));
         }
-        Product product = restTemplate.getForObject("http://"+productUrl+"/product/get/" + orderParams.getProductId(), Product.class);
+        Product product = restTemplate.getForObject("http://"+productServer+"/product/get/" + orderParams.getProductId(), Product.class);
         if (product == null){
             throw new RuntimeException("未获取到商品信息: " + JSONObject.toJSONString(orderParams));
         }
@@ -85,7 +73,7 @@ public class OrderServiceV2Impl implements OrderService {
         orderItem.setProPrice(product.getProPrice());
         orderItemMapper.insert(orderItem);
 
-        Result<Integer> result = restTemplate.getForObject("http://"+productUrl+"/product/update_count/" + orderParams.getProductId() + "/" + orderParams.getCount(), Result.class);
+        Result<Integer> result = restTemplate.getForObject("http://"+productServer+"/product/update_count/" + orderParams.getProductId() + "/" + orderParams.getCount(), Result.class);
         if (result.getCode() != HttpCode.SUCCESS){
             throw new RuntimeException("库存扣减失败");
         }
