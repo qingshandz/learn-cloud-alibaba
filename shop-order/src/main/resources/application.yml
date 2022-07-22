@@ -46,6 +46,15 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        dashboard: 127.0.0.1:8888  #Sentinel控制台服务地址
+        port: 9999  #指定和Sentinel控制台交互的端口，任意指定一个未使用的端口即可
+
+#配置开启Feign对Sentinel的支持
+feign:
+  sentinel:
+    enabled: true
 
   mybatis-plus:
     global-config:

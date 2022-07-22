@@ -20,7 +20,7 @@ import shop.params.OrderParams;
 public class OrderController {
 
     @Autowired
-    @Qualifier("orderServiceV5")
+    @Qualifier("orderServiceV6")
     private OrderService orderService;
 
     @GetMapping(value = "/submit_order")
@@ -34,5 +34,11 @@ public class OrderController {
     public String concurrentRequest(){
         log.info("测试业务在高并发场景下是否存在问题");
         return "binghe";
+    }
+
+    @GetMapping(value = "/test_sentinel")
+    public String testSentinel(){
+        log.info("测试Sentinel");
+        return "sentinel";
     }
 }

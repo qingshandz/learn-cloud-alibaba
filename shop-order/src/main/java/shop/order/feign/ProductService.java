@@ -4,6 +4,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import shop.bean.Product;
+import shop.order.feign.fallback.ProductServiceFallBack;
+import shop.order.feign.fallback.factory.ProductServiceFallBackFactory;
+import shop.order.feign.fallback.factory.UserServiceFallbackFactory;
 import shop.utils.resp.Result;
 
 /**
@@ -11,7 +14,8 @@ import shop.utils.resp.Result;
  * @date 2022/7/15 15:02
  * @description: 调用商品服务接口
  */
-@FeignClient("server-product")
+//@FeignClient(value = "server-product", fallback = ProductServiceFallBack.class)
+@FeignClient(value = "server-product", fallbackFactory = ProductServiceFallBackFactory.class)
 public interface ProductService {
 
     /**

@@ -22,7 +22,7 @@ public class Result<T> implements Serializable {
     /**
      * 状态描述
      */
-    private String msg;
+    private String codeMsg;
     /**
      * 返回数据
      */
