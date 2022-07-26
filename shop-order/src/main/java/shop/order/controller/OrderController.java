@@ -41,4 +41,11 @@ public class OrderController {
         log.info("测试Sentinel");
         return "sentinel";
     }
+
+
+    @GetMapping(value = "/test_sentinel2")
+    public String testSentinel2(){
+        log.info("测试Sentinel2");
+        return "sentinel2";
+    }
 }
