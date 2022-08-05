@@ -35,7 +35,7 @@ import java.util.*;
  * @date 2022/8/4 16:35
  * @description: 网关配置类
  */
-//@Configuration
+@Configuration
 public class GateWayConfig {
 
     private final List<ViewResolver> viewResolvers;
