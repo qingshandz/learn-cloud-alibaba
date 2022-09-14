@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: server-gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: 914fe3c5-e4f1-4b4d-b260-db51809c5c97
+        file-extension: yaml
+        group: gateway_group
+        refresh-enabled: true
